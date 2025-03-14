@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  background-color: #000000;
+  color: rgba(255, 255, 255, 0.87);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.875rem !important;
+    line-height: 2.25rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem !important;
+    line-height: 1.75rem !important;
+  }
+}
+
+/* Tablet and larger screens */
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Large screens and TVs */
+@media (min-width: 1280px) {
+  .container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  
+  html {
+    font-size: 18px;
+  }
+}
+
+/* 4K and larger displays */
+@media (min-width: 2560px) {
+  html {
+    font-size: 20px;
+  }
+  
+  .container {
+    max-width: 2000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Responsive grid layouts */
+.grid-cols-auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+/* Responsive padding and margins */
+.responsive-padding {
+  padding: clamp(1rem, 5vw, 4rem);
+}
+
+.responsive-margin {
+  margin: clamp(1rem, 5vw, 4rem);
+}
+
+/* Responsive typography */
+.responsive-text {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+
+.responsive-heading {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* Responsive images */
+.responsive-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.75rem;
+  }
+}
+
+/* Text shadow utility for better readability on images */
+.text-shadow-sm {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
