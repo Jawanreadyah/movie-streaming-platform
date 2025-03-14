@@ -96,6 +96,37 @@ export function trackVideoProgress(id: number, type: 'movie' | 'tv', title: stri
   });
 }
 
+/**
+ * Returns the appropriate typography class for a movie based on its genre
+ */
+export function getMovieTypographyClass(genreIds: number[]): string {
+  // Common genre IDs from TMDB
+  const ACTION_GENRES = [28, 10759]; // Action, Action & Adventure
+  const SCIFI_GENRES = [878, 10765]; // Science Fiction, Sci-Fi & Fantasy
+  const HORROR_GENRES = [27, 9648]; // Horror, Mystery
+  const DRAMA_GENRES = [18, 10768]; // Drama, War
+  const ANIMATION_GENRES = [16, 10762]; // Animation, Kids
+  const FANTASY_GENRES = [14, 10765]; // Fantasy, Sci-Fi & Fantasy
+  
+  // Check if the movie has any of these genres
+  if (genreIds.some(id => ACTION_GENRES.includes(id))) {
+    return 'action-title';
+  } else if (genreIds.some(id => SCIFI_GENRES.includes(id))) {
+    return 'scifi-title';
+  } else if (genreIds.some(id => HORROR_GENRES.includes(id))) {
+    return 'horror-title';
+  } else if (genreIds.some(id => DRAMA_GENRES.includes(id))) {
+    return 'drama-title';
+  } else if (genreIds.some(id => ANIMATION_GENRES.includes(id))) {
+    return 'animation-title';
+  } else if (genreIds.some(id => FANTASY_GENRES.includes(id))) {
+    return 'fantasy-title';
+  }
+  
+  // Default to cinematic style if no specific genre match
+  return 'cinematic-title';
+}
+
 // Add event listener for postMessage communication
 export function setupVideoProgressTracking(iframe: HTMLIFrameElement, onProgress: (progress: number, currentTime: number, duration: number) => void) {
   const handleMessage = (event: MessageEvent) => {

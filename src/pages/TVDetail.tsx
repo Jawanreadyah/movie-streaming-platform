@@ -20,6 +20,8 @@ export function TVDetail() {
   const [isLocked, setIsLocked] = useState(true);
   const [credits, setCredits] = useState<{ cast: Cast[]; crew: Crew[] } | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'episodes'>('overview');
+  const [recommendations, setRecommendations] = useState<TVShow[]>([]);
+  const [similar, setSimilar] = useState<TVShow[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,15 +46,19 @@ export function TVDetail() {
           setLoading(true);
           setError(null);
           
-          const [showData, seasonsData, creditsData] = await Promise.all([
+          const [showData, seasonsData, creditsData, recommendationsData, similarData] = await Promise.all([
             tmdb.getTVShowDetails(parseInt(id)),
             tmdb.getTVSeasons(parseInt(id)),
-            tmdb.getTVShowCredits(parseInt(id))
+            tmdb.getTVShowCredits(parseInt(id)),
+            tmdb.getTVRecommendations(parseInt(id)),
+            tmdb.getSimilarTVShows(parseInt(id))
           ]);
           
           setShow(showData);
           setSeasons(seasonsData);
           setCredits(creditsData);
+          setRecommendations(recommendationsData);
+          setSimilar(similarData.slice(0, 12));
           
           if (seasonsData.length > 0) {
             const firstSeason = seasonsData[0].season_number;
@@ -388,6 +394,98 @@ export function TVDetail() {
               </div>
             </TabsContent>
           </Tabs>
+
+          {recommendations.length > 0 && (
+            <div className="mt-8 md:mt-16">
+              <h2 className="text-xl md:text-2xl font-semibold text-white mb-4 md:mb-6">More Like This</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                {recommendations.map(tvshow => (
+                  <Link
+                    key={tvshow.id}
+                    to={`/tv/${tvshow.id}`}
+                    className="group relative flex flex-col overflow-hidden rounded-xl"
+                  >
+                    <div className="relative aspect-[2/3] overflow-hidden rounded-xl">
+                      <img
+                        src={tmdb.getPosterUrl(tvshow.poster_path, 'w342')}
+                        alt={tvshow.name}
+                        className="h-full w-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-110"
+                      />
+                      
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Hover info */}
+                      <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <h3 className="font-medium text-white line-clamp-1">{tvshow.name}</h3>
+                        <div className="flex items-center gap-2 mt-1 text-sm text-white/70">
+                          <div className="flex items-center gap-0.5">
+                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <span>{tvshow.vote_average?.toFixed(1)}</span>
+                          </div>
+                          <span>•</span>
+                          <span>{new Date(tvshow.first_air_date).getFullYear()}</span>
+                        </div>
+                        
+                        {/* Play button on hover */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                            <Play className="w-6 h-6 text-white fill-white" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {similar.length > 0 && (
+            <div className="mt-8 md:mt-16">
+              <h2 className="text-xl md:text-2xl font-semibold text-white mb-4 md:mb-6">Similar TV Shows</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                {similar.map(tvshow => (
+                  <Link
+                    key={tvshow.id}
+                    to={`/tv/${tvshow.id}`}
+                    className="group relative flex flex-col overflow-hidden rounded-xl"
+                  >
+                    <div className="relative aspect-[2/3] overflow-hidden rounded-xl">
+                      <img
+                        src={tmdb.getPosterUrl(tvshow.poster_path, 'w342')}
+                        alt={tvshow.name}
+                        className="h-full w-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-110"
+                      />
+                      
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Hover info */}
+                      <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <h3 className="font-medium text-white line-clamp-1">{tvshow.name}</h3>
+                        <div className="flex items-center gap-2 mt-1 text-sm text-white/70">
+                          <div className="flex items-center gap-0.5">
+                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <span>{tvshow.vote_average?.toFixed(1)}</span>
+                          </div>
+                          <span>•</span>
+                          <span>{new Date(tvshow.first_air_date).getFullYear()}</span>
+                        </div>
+                        
+                        {/* Play button on hover */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                            <Play className="w-6 h-6 text-white fill-white" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

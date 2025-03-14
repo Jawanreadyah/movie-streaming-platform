@@ -430,6 +430,22 @@ export const tmdb = {
     return data.results;
   },
 
+  async getMovieImages(id: number): Promise<{ backdrops: any[]; posters: any[]; logos: any[] }> {
+    const response = await fetch(
+      `${TMDB_BASE_URL}/movie/${id}/images?api_key=${TMDB_API_KEY}&include_image_language=en,null&include_adult=false`
+    );
+    const data = await response.json();
+    return {
+      backdrops: data.backdrops || [],
+      posters: data.posters || [],
+      logos: data.logos || []
+    };
+  },
+
+  getLogoUrl(path: string, size: 'w45' | 'w154' | 'w300' | 'w500' | 'original' = 'original'): string {
+    return path ? `${TMDB_IMAGE_BASE_URL}/${size}${path}` : '';
+  },
+
   async getPopularMovies(): Promise<Movie[]> {
     const response = await fetch(
       `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1&include_adult=false`

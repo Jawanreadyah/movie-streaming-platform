@@ -252,25 +252,36 @@ export function MovieDetail() {
                   <Link
                     key={movie.id}
                     to={`/movie/${movie.id}`}
-                    className="group relative flex flex-col overflow-hidden rounded-xl transition-all duration-300"
+                    className="group relative flex flex-col overflow-hidden rounded-xl"
                   >
-                    <div className="relative aspect-[2/3] overflow-hidden">
+                    <div className="relative aspect-[2/3] overflow-hidden rounded-xl">
                       <img
                         src={tmdb.getPosterUrl(movie.poster_path, 'w342')}
                         alt={movie.title}
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        className="h-full w-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-black/80 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <h3 className="font-medium text-sm text-white line-clamp-1">{movie.title}</h3>
-                      <div className="flex items-center gap-2 mt-1 text-xs text-white/60">
-                        <div className="flex items-center gap-0.5">
-                          <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
-                          <span>{movie.vote_average?.toFixed(1)}</span>
+                      
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Hover info */}
+                      <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <h3 className="font-medium text-white line-clamp-1">{movie.title}</h3>
+                        <div className="flex items-center gap-2 mt-1 text-sm text-white/70">
+                          <div className="flex items-center gap-0.5">
+                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <span>{movie.vote_average?.toFixed(1)}</span>
+                          </div>
+                          <span>•</span>
+                          <span>{new Date(movie.release_date).getFullYear()}</span>
                         </div>
-                        <span>•</span>
-                        <span>{new Date(movie.release_date).getFullYear()}</span>
+                        
+                        {/* Play button on hover */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                            <Play className="w-6 h-6 text-white fill-white" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </Link>
@@ -287,25 +298,36 @@ export function MovieDetail() {
                   <Link
                     key={movie.id}
                     to={`/movie/${movie.id}`}
-                    className="group relative flex flex-col overflow-hidden rounded-xl transition-all duration-300"
+                    className="group relative flex flex-col overflow-hidden rounded-xl"
                   >
-                    <div className="relative aspect-[2/3] overflow-hidden">
+                    <div className="relative aspect-[2/3] overflow-hidden rounded-xl">
                       <img
                         src={tmdb.getPosterUrl(movie.poster_path, 'w342')}
                         alt={movie.title}
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        className="h-full w-full object-cover transition-transform duration-500 will-change-transform group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-black/80 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <h3 className="font-medium text-sm text-white line-clamp-1">{movie.title}</h3>
-                      <div className="flex items-center gap-2 mt-1 text-xs text-white/60">
-                        <div className="flex items-center gap-0.5">
-                          <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" />
-                          <span>{movie.vote_average?.toFixed(1)}</span>
+                      
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Hover info */}
+                      <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <h3 className="font-medium text-white line-clamp-1">{movie.title}</h3>
+                        <div className="flex items-center gap-2 mt-1 text-sm text-white/70">
+                          <div className="flex items-center gap-0.5">
+                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <span>{movie.vote_average?.toFixed(1)}</span>
+                          </div>
+                          <span>•</span>
+                          <span>{new Date(movie.release_date).getFullYear()}</span>
                         </div>
-                        <span>•</span>
-                        <span>{new Date(movie.release_date).getFullYear()}</span>
+                        
+                        {/* Play button on hover */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                            <Play className="w-6 h-6 text-white fill-white" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </Link>

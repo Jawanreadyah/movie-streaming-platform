@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;800&family=Oswald:wght@400;700&family=Orbitron:wght@400;700&family=Creepster&family=Playfair+Display:ital,wght@0,700;1,700&family=Bubblegum+Sans&family=MedievalSharp&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

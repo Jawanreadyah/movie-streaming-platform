@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, Calendar, Play, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { tmdb, type Movie, type Genre } from '@/lib/tmdb';
+import { Calendar, Star, Play, Info } from 'lucide-react';
+import { type Movie, type Genre } from '@/lib/types';
 import { TMDB_API_KEY, TMDB_BASE_URL } from '@/lib/tmdb';
 import ReactPlayer from 'react-player';
 
@@ -16,6 +16,7 @@ export function MovieBanner({ movies, genres }: MovieBannerProps) {
   const [showTrailer, setShowTrailer] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [movieLogo, setMovieLogo] = useState<string | null>(null);
   const playerRef = useRef<ReactPlayer>(null);
 
   const currentMovie = movies[currentIndex];
@@ -25,6 +26,10 @@ export function MovieBanner({ movies, genres }: MovieBannerProps) {
     setShowTrailer(false);
     setTrailerUrl(null);
     setIsLoading(false);
+    setMovieLogo(null);
+
+    // Fetch movie logo
+    fetchMovieLogo();
 
     // Start the poster display timer
     const posterTimer = setTimeout(() => {
@@ -35,6 +40,34 @@ export function MovieBanner({ movies, genres }: MovieBannerProps) {
       clearTimeout(posterTimer);
     };
   }, [currentIndex]);
+
+  const fetchMovieLogo = async () => {
+    if (!currentMovie?.id) return;
+
+    try {
+      const response = await fetch(
+        `${TMDB_BASE_URL}/movie/${currentMovie.id}/images?api_key=${TMDB_API_KEY}&include_image_language=en,null`
+      );
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // Get the logo if available
+      if (data.logos && data.logos.length > 0) {
+        // Sort by vote_average to get the highest quality logo
+        const bestLogo = [...data.logos].sort((a, b) => b.vote_average - a.vote_average)[0];
+        setMovieLogo(`https://image.tmdb.org/t/p/original${bestLogo.file_path}`);
+      } else {
+        setMovieLogo(null);
+      }
+    } catch (error) {
+      console.error('Error fetching movie logo:', error);
+      setMovieLogo(null);
+    }
+  };
 
   const fetchAndPlayTrailer = async () => {
     if (!currentMovie?.id || isLoading) return;
@@ -142,8 +175,7 @@ export function MovieBanner({ movies, genres }: MovieBannerProps) {
                     controls: 0,
                     modestbranding: 1,
                     showinfo: 0,
-                    rel: 0,
-                    quality: 'hd1080'
+                    rel: 0
                   }
                 }
               }}
@@ -151,7 +183,7 @@ export function MovieBanner({ movies, genres }: MovieBannerProps) {
           </div>
         ) : (
           <img
-            src={tmdb.getBackdropUrl(currentMovie.backdrop_path, 'original')}
+            src={`https://image.tmdb.org/t/p/original${currentMovie.backdrop_path}`}
             alt={currentMovie.title}
             className="h-full w-full object-cover"
           />
@@ -164,9 +196,17 @@ export function MovieBanner({ movies, genres }: MovieBannerProps) {
       <div className="absolute inset-0 flex items-center">
         <div className="mx-auto w-full max-w-7xl px-8">
           <div className="max-w-2xl">
-            <h1 className="text-4xl font-bold text-white md:text-6xl">
-              {currentMovie.title}
-            </h1>
+            {movieLogo ? (
+              <img 
+                src={movieLogo} 
+                alt={currentMovie.title} 
+                className="max-h-32 max-w-full object-contain mb-4"
+              />
+            ) : (
+              <h1 className="text-4xl font-bold text-white md:text-6xl">
+                {currentMovie.title}
+              </h1>
+            )}
 
             <div className="mt-4 flex flex-wrap items-center gap-4 text-white/90">
               <div className="flex items-center gap-1">
@@ -189,27 +229,20 @@ export function MovieBanner({ movies, genres }: MovieBannerProps) {
               </div>
             </div>
 
-            <p className="mt-4 text-lg text-white/70 line-clamp-3">
+            <p className="mt-4 max-w-lg text-white/70">
               {currentMovie.overview}
             </p>
 
-            <div className="mt-8 flex gap-4">
+            <div className="mt-6 flex flex-wrap gap-4">
               <Link to={`/movie/${currentMovie.id}`}>
-                <Button
-                  size="lg"
-                  className="bg-white text-black hover:bg-white/90 rounded-full px-8"
-                >
-                  <Play className="mr-2 h-5 w-5" fill="currentColor" />
-                  Play Now
+                <Button size="lg" className="gap-2">
+                  <Play className="h-5 w-5" />
+                  Watch Now
                 </Button>
               </Link>
               <Link to={`/movie/${currentMovie.id}`}>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="bg-white/10 text-white hover:bg-white/20 rounded-full border-white/20 px-8"
-                >
-                  <Info className="mr-2 h-5 w-5" />
+                <Button variant="outline" size="lg" className="gap-2">
+                  <Info className="h-5 w-5" />
                   More Info
                 </Button>
               </Link>

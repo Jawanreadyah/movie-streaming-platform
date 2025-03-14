@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Play, Info, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { tmdb, type Movie } from '@/lib/tmdb';
+import { tmdb } from '@/lib/tmdb';
+import { type Movie } from '@/lib/types';
 
 interface MovieBannerSliderProps {
   movies: Movie[];
@@ -10,6 +11,7 @@ interface MovieBannerSliderProps {
 
 export function MovieBannerSlider({ movies }: MovieBannerSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [movieLogos, setMovieLogos] = useState<Record<number, string | null>>({});
   const movie = movies[currentIndex];
 
   // Auto-slide functionality
@@ -20,6 +22,34 @@ export function MovieBannerSlider({ movies }: MovieBannerSliderProps) {
 
     return () => clearInterval(interval);
   }, [movies.length]);
+
+  // Fetch movie logos for all movies in the slider
+  useEffect(() => {
+    const fetchLogos = async () => {
+      for (const movie of movies) {
+        if (movie.id && !movieLogos[movie.id]) {
+          try {
+            const images = await tmdb.getMovieImages(movie.id);
+            if (images.logos && images.logos.length > 0) {
+              // Sort by vote_average to get the highest quality logo
+              const bestLogo = [...images.logos].sort((a, b) => b.vote_average - a.vote_average)[0];
+              setMovieLogos(prev => ({
+                ...prev,
+                [movie.id]: `https://image.tmdb.org/t/p/original${bestLogo.file_path}`
+              }));
+            } else {
+              setMovieLogos(prev => ({ ...prev, [movie.id]: null }));
+            }
+          } catch (error) {
+            console.error(`Error fetching logo for movie ${movie.id}:`, error);
+            setMovieLogos(prev => ({ ...prev, [movie.id]: null }));
+          }
+        }
+      }
+    };
+
+    fetchLogos();
+  }, [movies]);
 
   return (
     <div className="relative w-full overflow-hidden rounded-3xl bg-black">
@@ -39,9 +69,17 @@ export function MovieBannerSlider({ movies }: MovieBannerSliderProps) {
         <div className="absolute inset-0 z-20 flex items-center">
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-lg">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
-                {movie.title}
-              </h1>
+              {movie.id && movieLogos[movie.id] ? (
+                <img 
+                  src={movieLogos[movie.id] || ''}
+                  alt={movie.title}
+                  className="max-h-20 max-w-full object-contain mb-3"
+                />
+              ) : (
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
+                  {movie.title}
+                </h1>
+              )}
               <p className="text-sm sm:text-base text-white/70 line-clamp-2 sm:line-clamp-3 mb-4">
                 {movie.overview}
               </p>
@@ -49,7 +87,7 @@ export function MovieBannerSlider({ movies }: MovieBannerSliderProps) {
                 <Link to={`/movie/${movie.id}`}>
                   <Button 
                     size="sm"
-                    className="bg-white text-black hover:bg-white/90 rounded-full px-4 sm:px-8 sm:size-lg"
+                    className="bg-white text-black hover:bg-white/90 rounded-full px-4 sm:px-8"
                   >
                     <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="currentColor" />
                     Play Now
@@ -59,7 +97,7 @@ export function MovieBannerSlider({ movies }: MovieBannerSliderProps) {
                   <Button 
                     variant="outline"
                     size="sm"
-                    className="bg-white/10 text-white hover:bg-white/20 rounded-full border-white/20 px-4 sm:px-8 sm:size-lg"
+                    className="bg-white/10 text-white hover:bg-white/20 rounded-full border-white/20 px-4 sm:px-8"
                   >
                     <Info className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     More Info

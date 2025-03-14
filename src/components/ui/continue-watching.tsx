@@ -64,11 +64,6 @@ export function ContinueWatching({ items }: { items: WatchProgress[] }) {
                   />
                 </div>
 
-                {/* Progress Percentage Badge */}
-                <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-md border border-white/20">
-                  {Math.round(item.progress)}%
-                </div>
-
                 {/* Play Button Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-opacity">
                   <Button 
@@ -87,16 +82,8 @@ export function ContinueWatching({ items }: { items: WatchProgress[] }) {
                     <>
                       <span>S{item.episodeInfo.seasonNumber}</span>
                       <span>E{item.episodeInfo.episodeNumber}</span>
-                      <span>•</span>
                     </>
                   )}
-                  <span className="flex items-center">
-                    <div className="w-2 h-2 rounded-full bg-red-600 mr-1"></div>
-                    {Math.floor(item.currentTime || 0) / 60 > 0 
-                      ? `${Math.floor((item.currentTime || 0) / 60)}m left`
-                      : 'Just started'
-                    }
-                  </span>
                 </div>
               </div>
             </Link>

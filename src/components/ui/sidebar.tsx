@@ -70,10 +70,13 @@ export const Sidebar = ({
 };
 
 export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
+  // Cast children as ReactNode to ensure type compatibility
+  const children = props.children as React.ReactNode;
+  
   return (
     <>
       <DesktopSidebar {...props} />
-      <MobileSidebar {...(props as React.ComponentProps<"div">)} />
+      <MobileSidebar>{children}</MobileSidebar>
     </>
   );
 };
