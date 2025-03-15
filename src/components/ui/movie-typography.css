@@ -1,0 +1,94 @@
+/* Movie Typography Styles */
+
+.movie-title {
+  font-family: 'Bebas Neue', sans-serif; /* Base cinematic font */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  line-height: 1.1;
+}
+
+/* Dynamic movie title class that allows applying custom styling */
+.movie-title-styled {
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
+  font-weight: 800;
+  position: relative;
+  display: inline-block;
+}
+
+/* Cinematic style with gradient glow */
+.cinematic-title {
+  background: linear-gradient(180deg, #ffffff 0%, #b0b0b0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  letter-spacing: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* Action movie style */
+.action-title {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ffcc00;
+  text-shadow: 
+    0 0 5px rgba(255, 204, 0, 0.5),
+    0 1px 0 #000,
+    0 2px 0 #000;
+}
+
+/* Sci-fi style */
+.scifi-title {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #64ffda;
+  text-shadow: 
+    0 0 10px rgba(100, 255, 218, 0.7),
+    0 0 20px rgba(100, 255, 218, 0.5);
+}
+
+/* Horror style */
+.horror-title {
+  font-family: 'Creepster', cursive;
+  letter-spacing: 2px;
+  color: #ff3333;
+  text-shadow: 
+    0 0 5px rgba(255, 0, 0, 0.7),
+    2px 2px 0 #000;
+}
+
+/* Drama style */
+.drama-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Animation style */
+.animation-title {
+  font-family: 'Bubblegum Sans', cursive;
+  color: #ffcc00;
+  text-shadow: 
+    0 2px 0 #ff9900,
+    0 4px 0 #000;
+  letter-spacing: 1px;
+}
+
+/* Fantasy style */
+.fantasy-title {
+  font-family: 'MedievalSharp', cursive;
+  color: #ffd700;
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.5),
+    0 0 20px rgba(255, 215, 0, 0.3);
+  letter-spacing: 1px;
+}
