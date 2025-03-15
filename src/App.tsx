@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { Home, Search, User, LayoutDashboard, UserCog, Settings, LogOut, CreditCard, HelpCircle, Film, Tv, Menu } from "lucide-react";
+import { Home, Search, Bookmark, UserCog, Settings, LogOut, CreditCard, HelpCircle, Film, Tv, Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import { MovieBanner } from "@/components/ui/movie-banner";
 import { CompanyShowcase } from "@/components/ui/company-showcase";
@@ -17,8 +17,10 @@ import { StudioMovies } from "@/pages/StudioMovies";
 import { Search as SearchPage } from "@/pages/Search";
 import { FAQ } from "@/pages/FAQ";
 import { ComingSoon } from "@/pages/ComingSoon";
+import { Watchlist } from "@/pages/Watchlist";
 import { Footer } from "@/components/ui/footer";
-import { tmdb, type Movie, type Genre, type TVShow } from "@/lib/tmdb";
+import { tmdb } from "@/lib/tmdb";
+import { type Movie, type Genre, type TVShow } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { getWatchProgress, type WatchProgress } from "@/lib/utils";
@@ -190,10 +192,10 @@ function App() {
       ),
     },
     {
-      label: "Dashboard",
-      href: "/coming-soon/dashboard",
+      label: "Watchlist",
+      href: "/watchlist",
       icon: (
-        <LayoutDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <Bookmark className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
@@ -261,12 +263,11 @@ function App() {
                     <SidebarLink 
                       key={idx} 
                       link={link} 
-                      onClick={() => setSidebarOpen(false)}
+                      props={{ onClick: () => setSidebarOpen(false) }}
                     />
                   ))}
                 </nav>
               </SidebarBody>
-            
             </Sidebar>
           </motion.div>
 
@@ -280,6 +281,7 @@ function App() {
               <Route path="/studio/:studio" element={<StudioMovies />} />
               <Route path="/pricing" element={<PricingSectionDemo />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/watchlist" element={<Watchlist />} />
               <Route path="/coming-soon/:feature" element={<ComingSoon />} />
             </Routes>
           </main>

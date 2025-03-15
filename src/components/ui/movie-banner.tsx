@@ -34,7 +34,7 @@ export function MovieBanner({ movies, genres }: MovieBannerProps) {
     // Start the poster display timer
     const posterTimer = setTimeout(() => {
       fetchAndPlayTrailer();
-    }, 3000);
+    }, 2000);
 
     return () => {
       clearTimeout(posterTimer);

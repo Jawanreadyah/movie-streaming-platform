@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { type Movie } from '@/lib/tmdb';
-import { Button } from '@/components/ui/button';
+import { type Movie } from '@/lib/types';
 
 interface TopContentProps {
   title?: string;
@@ -52,24 +50,47 @@ export function TopContent({ title = "TOP 10", subtitle = "CONTENT TODAY", items
 
         {/* Content Slider */}
         <div className="relative">
-          {/* Navigation Buttons */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute -left-16 top-1/2 -translate-y-1/2 z-20 text-white hover:bg-white/10"
+          {/* Navigation Buttons - Styled like elsewhere in the site */}
+          <button
             onClick={prevSlide}
+            className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/40"
+            aria-label="Previous"
           >
-            <ChevronLeft className="h-8 w-8" />
-          </Button>
-          
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute -right-16 top-1/2 -translate-y-1/2 z-20 text-white hover:bg-white/10"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
+          </button>
+          <button
             onClick={nextSlide}
+            className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-black/40"
+            aria-label="Next"
           >
-            <ChevronRight className="h-8 w-8" />
-          </Button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </button>
 
           {/* Items Container */}
           <div 

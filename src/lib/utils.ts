@@ -148,3 +148,44 @@ export function setupVideoProgressTracking(iframe: HTMLIFrameElement, onProgress
     window.removeEventListener('message', handleMessage);
   };
 }
+
+// Watchlist Types and Utilities
+export type WatchlistItem = {
+  id: number;
+  title: string;
+  poster_path: string;
+  type: 'movie' | 'tv';
+  addedAt: number; // timestamp
+};
+
+export type WatchlistItemInput = Omit<WatchlistItem, 'addedAt'>;
+
+export const getWatchlist = (): WatchlistItem[] => {
+  const watchlist = localStorage.getItem('watchlist');
+  return watchlist ? JSON.parse(watchlist) : [];
+};
+
+export const addToWatchlist = (item: WatchlistItemInput): WatchlistItem[] => {
+  const watchlist = getWatchlist();
+  // Check if item already exists in watchlist
+  const exists = watchlist.some(i => i.id === item.id && i.type === item.type);
+  if (!exists) {
+    const newItem: WatchlistItem = { ...item, addedAt: Date.now() };
+    const newWatchlist = [...watchlist, newItem];
+    localStorage.setItem('watchlist', JSON.stringify(newWatchlist));
+    return newWatchlist;
+  }
+  return watchlist;
+};
+
+export const removeFromWatchlist = (id: number, type: 'movie' | 'tv'): WatchlistItem[] => {
+  const watchlist = getWatchlist();
+  const newWatchlist = watchlist.filter(item => !(item.id === id && item.type === type));
+  localStorage.setItem('watchlist', JSON.stringify(newWatchlist));
+  return newWatchlist;
+};
+
+export const isInWatchlist = (id: number, type: 'movie' | 'tv'): boolean => {
+  const watchlist = getWatchlist();
+  return watchlist.some(item => item.id === id && item.type === type);
+};
